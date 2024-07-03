@@ -1,7 +1,10 @@
+# for the first time only
 install.packages("tidyverse")
 install.packages("openxlsx")
 install.packages("countrycode")
 
+# every time you open the Rstudio, you need to access the library to use functions
+# each package has some sets of functions
 library(tidyverse)
 library(openxlsx)
 library(countrycode)
@@ -16,18 +19,18 @@ ptfr %>%
   geom_line()
 
 # data handling (mutate, filter, mean, gather, spread, join)
-## mutate ifelse
+## mutate ifelse (to create a dummy variable)
 ptfr %>% 
   select(PERIOD, ESP) %>% 
   mutate(ESP = ifelse(ESP == 0, NA, ESP)) %>% 
   ggplot(aes(x = PERIOD, y = ESP)) +
   geom_line()
 
-## gather
+## gather (to convert a wide dataset to a long one)
 ptfr %>% 
   gather(key = country, value = tfr, - PERIOD) %>% 
   mutate(tfr1 = ifelse(tfr == 0, NA, tfr)) %>% 
-  filter(country == "ESP") %>% 
+  filter(country == "ESP") %>% ## filter (select some rows meeting the conditions)
   ggplot(aes(x = PERIOD, y = tfr, colour = country)) +
   geom_line()
 
@@ -80,12 +83,12 @@ ptfr %>%
   group_by(PERIOD) %>% 
   summarise(mean = mean(tfr, na.rm = T))
 
-## spread
+## spread (to convert from a long dataset to a wide dataset)
 ptfr %>% 
   gather(key = country, value = tfr, -PERIOD) %>% 
   spread(key = country, value = tfr)
 
-## join
+## join (merge several datasets)
 d_ptfr_adj <- ptfr_adj %>% 
   gather(key = country, value = tfr, -PERIOD) %>% 
   rename(adjtfr = tfr)
