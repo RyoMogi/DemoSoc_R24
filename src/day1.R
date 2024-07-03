@@ -61,11 +61,11 @@ ptfr %>%
                             country_name %in% c("Germany", "Austria", "Switzerland", "France", 
                                                 "Netherlands", "United.Kingdom", "Belgium",
                                                 "Ireland") ~ "Western Europe",
-                            country_name %in% c("Taiwan", "Japan", "South Korea") ~ "East Asis",
+                            country_name %in% c("Taiwan", "Japan", "South Korea") ~ "East Asia",
                             country_name %in% c("Sweden", "Norway", "Denmark", "Finland",
                                                 "Iceland") ~ "Northern Europe",
-                            country_name %in% c("United States", "Canada"),
-                            T ~ "South America")) %>% View() 
+                            country_name %in% c("United States", "Canada") ~ "North America",
+                            T ~ "South America"))
 
 # group_by and summarise
 ptfr %>% 
@@ -119,4 +119,4 @@ d_ptfr %>%
   theme(axis.text = element_text(size = 12),
         axis.title = element_text(size = 15),
         strip.text.x = element_text(size = 12))
-ggsave("out/.png", width = 7.5, height = 5, bg = "white")
+ggsave("out/ptfr_country.png", width = 7.5, height = 5, bg = "white")
