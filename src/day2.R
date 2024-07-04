@@ -14,10 +14,10 @@ mab <- read.xlsx("data/MAB.xlsx", sheet = "Mean age at birth", startRow = 3)
 ## There are several persons who got the same messages and solved them already.
 
 
-# exercise 1: make a plot of TFR of a one country
+# exercise 1: make a plot of MAB of a one country
 
-# exercise 2: make a plot of TFR of three countries
+# exercise 2: make a plot of MAB of three countries
 
-# exercise 3: calculate mean TFRs of ever 10 years (e.g. 1960-69) of every country
+# exercise 3: calculate mean MABs of ever 10 years (e.g. 1960-69) of every country
 
 # exercise 4: merge the TFR data and MAB data and plot them (x: MAB, y: TFR)
