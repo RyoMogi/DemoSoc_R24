@@ -1,1 +1,1 @@
-# DemoSoc_R24
+This is a set of codes for the R course organised by DemoSoc group, the UPF.
