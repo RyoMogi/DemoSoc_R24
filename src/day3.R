@@ -1,4 +1,6 @@
-library(foreign)
+#library(foreign)
+
+library(tidyverse)
 
 # The aim of the day 3 is to apply some regression models using a mock data 
 
@@ -26,20 +28,52 @@ data <- read.csv("data/mock-data.csv")
 # edulvlb: Highest level of education
 # eduyrs: number of schooling years
 
-# educational level
-edulvla2 = case_when(edulvla %in% c(0, 1, 113, 129) ~ 1,
-                     edulvla %in% c(2, 212, 213, 221, 222, 223, 229) ~ 2,
-                     edulvla %in% c(3, 311, 312, 313, 321, 322, 323) ~ 3,
-                     edulvla %in% c(4, 412, 413, 421, 422, 423) ~ 4,
-                     edulvla %in% c(5, 510, 520, 610, 620, 710, 720, 800) ~ 5,
-                     edulvla %in% c(55, 555) ~ 0),
-education = case_when(edulvla2 %in% c(0, 1, 2) ~ "Low",
-                      edulvla2 %in% c(3, 4) ~ "Medium",
-                      edulvla2 == 5 ~ "High")
+data2 <- data %>% 
+  mutate(everchild = ifelse(bthcld == 2, 0, bthcld),
+         evlvptn = ifelse(evlvptn == 2, 0, 1),
+         gndr = ifelse(gndr == 2, 0, gndr),
+         # educational level
+         edulvlb2 = case_when(edulvlb %in% c(0, 1, 113, 129) ~ 1,
+                              edulvlb %in% c(2, 212, 213, 221, 222, 223, 229) ~ 2,
+                              edulvlb %in% c(3, 311, 312, 313, 321, 322, 323) ~ 3,
+                              edulvlb %in% c(4, 412, 413, 421, 422, 423) ~ 4,
+                              edulvlb %in% c(5, 510, 520, 610, 620, 710, 720, 800) ~ 5,
+                              edulvlb %in% c(55, 555) ~ 0),
+         education = case_when(edulvlb2 %in% c(0, 1, 2) ~ "Low",
+                               edulvlb2 %in% c(3, 4) ~ "Medium",
+                               edulvlb2 == 5 ~ "High"))
+
+data_new <- data %>% 
+  mutate(everchild = ifelse(bthcld == 2, 0, bthcld),
+         gndr = ifelse(gndr == 2, 0, gndr))
+
+try2 <- try1 %>% 
+  mutate(gndr = ifelse(gndr == 2, 0, gndr))
 
 # To do 2: run a logistic regression
-logit <- glm(Y ~ X1 + X2, data = , family = binomial("logit"))
+logit1 <- glm(everchild ~ evlvptn,
+              data = data2, family = binomial("logit"))
+
+logit2 <- glm(everchild ~ evlvptn + gndr + agea,
+              data = data2, family = binomial("logit"))
+
+logit <- glm(everchild ~ evlvptn + gndr +
+               education + cntry + agea,
+               data = data2, family = binomial("logit"))
+summary(logit)
+
+install.packages("gtsummary")
+library(gtsummary)
+#gtsummary()
 
 # Aim: OLS? poisson?
-ols <- lm(Y ~ X1 + X2, data = )
-poisson <- glm(Y ~ X1 + X2, data = , family = "poisson")
+ols <- lm(nbthcld ~ evlvptn + gndr +
+            education + cntry + agea,
+          data = data2)
+summary(ols)
+tbl_regression(ols)
+
+poisson <- glm(nbthcld ~ evlvptn + gndr +
+                 education + cntry + agea,
+               data = data2, family = "poisson")
+summary(poisson)
